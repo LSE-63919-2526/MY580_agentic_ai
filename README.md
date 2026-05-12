@@ -22,7 +22,7 @@ If you hope to use Gemini CLI for the workshop, please install it on your laptop
 Each guide takes ~10 minutes and only needs to be done once. You'll need:
 
 - A laptop you can install software on
-- A **personal** Google account (not your LSE/Workspace one — free tier eligibility)
+- A **personal** Google account (for access to the free tier)
 - Internet access
 
 ## What's in this repo
