@@ -48,8 +48,9 @@ node_modules/
 *.pem
 
 # Local Claude Code config (sessions, personal settings, API keys)
-# Shared CLAUDE.md is committable; CLAUDE.local.md holds personal overrides
-.claude/
+# Shared CLAUDE.md and .claude/skills/ are committable; CLAUDE.local.md holds personal overrides
+.claude/*
+!.claude/skills/
 CLAUDE.local.md
 
 # Local Gemini CLI config (settings.json, sessions in tmp/, extensions)
@@ -59,3 +60,7 @@ CLAUDE.local.md
 # Build / dist
 dist/
 build/
+
+# Demo project raw data — too large to ship (over GitHub's per-file cap).
+# `project_demo` is reference-only; students don't run it, so we don't need to commit the inputs.
+project_demo/data/raw/

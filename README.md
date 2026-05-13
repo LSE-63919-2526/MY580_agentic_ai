@@ -25,12 +25,13 @@ Of course, if you already use another agentic AI, or have a higher tier account 
 
 ## What's in this repo
 
-| File | Purpose |
+| File / folder | Purpose |
 |---|---|
 | `gemini-cli-setup-windows.md` | Step-by-step install guide for Windows |
 | `gemini-cli-setup-mac.md` | Step-by-step install guide for macOS |
-
-More materials will be added closer to the session.
+| `project_student/` | Starter folder for the morning exercise — contains a blank `GEMINI.md` for you to fill in, plus pre-staged data under `data/raw/` |
+| `project_demo/` | The project used in the Module 4 live demo (reference only — you won't edit this) |
+| `slides/` | The workshop deck (`MY580_agentic_ai.html`) plus source `.Rmd` and image assets |
 
 ## Questions
 
