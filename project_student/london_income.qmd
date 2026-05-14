@@ -1,0 +1,85 @@
+---
+title: "Enhanced Analysis of London Household Income"
+author: "Gemini CLI Researcher"
+format: 
+  html:
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(sf)
+library(tmap)
+
+data <- readRDS("data/processed_data.rds")
+```
+
+## Introduction
+
+This report provides an enhanced analysis of household income across London MSOAs, incorporating borough-level comparisons and exploring the relationship between income and pandemic-era work patterns.
+
+## Interactive Map of Household Income
+
+The map below allows for exploration of total annual household income. Hover over areas to see specific income levels and borough names.
+
+```{r}
+#| label: interactive-map
+tmap_mode("view")
+tm_shape(data) +
+  tm_polygons("total_income", 
+              style = "quantile", 
+              n = 5, 
+              palette = "YlGnBu", 
+              title = "Annual Income (£)",
+              id = "MSOA21NM",
+              popup.vars = c("Borough" = "borough", 
+                             "Income" = "total_income", 
+                             "WFH % (2021)" = "pct_wfh"))
+```
+
+## Borough-Level Disparities
+
+The chart below shows the average household income aggregated by London Borough.
+
+```{r}
+#| label: borough-chart
+borough_data <- data %>%
+  st_drop_geometry() %>%
+  group_by(borough) %>%
+  summarise(avg_income = mean(total_income, na.rm = TRUE)) %>%
+  arrange(desc(avg_income))
+
+ggplot(borough_data, aes(x = reorder(borough, avg_income), y = avg_income)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = "Borough", y = "Average Household Income (£)", 
+       title = "Average Household Income by London Borough (2023)")
+```
+
+## COVID-19 Impact Proxy: Work from Home and Income
+
+Using "Working mainly at or from home" from the 2021 Census as a proxy for COVID-19 era work shifts, we examine its relationship with 2023 household income.
+
+```{r}
+#| label: covid-proxy-plot
+cor_val <- cor(data$pct_wfh, data$total_income, use = "complete.obs")
+
+ggplot(data, aes(x = pct_wfh, y = total_income)) +
+  geom_point(alpha = 0.4, color = "darkgreen") +
+  geom_smooth(method = "lm", color = "red") +
+  theme_minimal() +
+  labs(x = "Working from Home % (Census 2021)", 
+       y = "Total Annual Household Income (£) (2023)",
+       title = "Relationship: WFH Patterns and Household Income",
+       subtitle = paste0("Pearson Correlation: ", round(cor_val, 3)))
+```
+
+## Summary of Findings
+
+The interactive analysis reveals significant income disparities between London boroughs, with areas like Kensington and Chelsea and Westminster maintaining the highest income levels. The positive correlation between 2021 "Work from Home" rates and 2023 income levels (Pearson r = `r round(cor_val, 3)`) suggests that higher-income households were more likely to transition to remote work during the pandemic, a trend that appears to persist or correlate strongly with economic status in the post-pandemic period. The borough-level aggregation further highlights the geographic concentration of wealth in Central and West London compared to outer boroughs.
