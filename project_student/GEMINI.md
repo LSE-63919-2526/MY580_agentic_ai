@@ -45,5 +45,14 @@ We will plan the project together, but as you build the plan, you will need to d
     - Findings: Identified a strong positive correlation (r ≈ 0.8) between 2021 WFH rates and 2023 household income, highlighting the resilience of remote-capable high-income sectors.
 
     - Interactive Mapping**: Implemented an interactive `tmap` visualization in `london_income.html` with borough and WFH tooltips.
-    
+
     - Skill Standardization**: Introduced `skills/spatial-analysis-r.md` and `skills/census-data-wrangling.md` for project-wide consistency.
+
+
+## Errors that we made last time:
+
+    - Be careful with edge cases (ex: "City of London" vs. "Westminster 001") and ask if any of the bourough names are confusing. **This was messed up and dropped incorrectly initially.**
+    
+    - Causal Validity & Multicollinearity: The regression analysis shows extreme multicollinearity between "High Education %" and "Work from Home %" (Correlation = 0.919, VIF = 6.4). While both are statistically significant, the "finding" that WFH and Education independently drive income is statistically shaky because they are so heavily overlapping. In a joint model, the Education coefficient actually becomes negative, which is a classic sign of model instability due to collinearity.
+
+    - Make sure to use "median household income," and not "Total annual household income".

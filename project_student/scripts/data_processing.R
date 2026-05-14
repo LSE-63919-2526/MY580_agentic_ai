@@ -4,10 +4,10 @@ library(sf)
 
 # 1. Load Income Data
 income_path <- "data/raw/ons_income_msoa_2023.xlsx"
-# We saw that row 4 (Excel index 4) is where headers are, so skip=3 in read_excel (which is 0-indexed for rows before header)
-income_data <- read_excel(income_path, sheet = "Total annual income", skip = 3) %>%
+# Using 'Net annual income' as the best proxy for disposable household income
+income_data <- read_excel(income_path, sheet = "Net annual income", skip = 3) %>%
   select(msoa_code = 1, # First column
-         total_income = 7) %>% # Total annual household income is the 7th column in my peek
+         total_income = 7) %>% # Disposable (net) annual income (£)
   mutate(total_income = as.numeric(total_income))
 
 # 2. Load Census Data (Qualifications - ts067.csv)
@@ -29,7 +29,7 @@ wfh_data <- read_csv(wfh_path) %>%
 # 3. Load London MSOA Boundaries
 london_msoas <- st_read("data/raw/MSOA_2021_London.geojson") %>%
   rename(msoa_code = MSOA21CD) %>%
-  mutate(borough = str_remove(MSOA21NM, " [0-9]{3}$"))
+  mutate(borough = sub(" [^ ]+$", "", MSOA21NM))
 
 # 4. Join and Filter
 final_data <- london_msoas %>%
